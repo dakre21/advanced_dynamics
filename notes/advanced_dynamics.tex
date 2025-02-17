@@ -1,0 +1,289 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue]{hyperref}
+\usepackage{bookmark}
+\usepackage[parfill]{parskip}
+\usepackage[a4paper, margin=2.54cm]{geometry}
+
+\title{Advanced Dynamics}
+\author{David Akre}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+    This document is a collection of notes from MCEN 5228 at CU-Boulder as well as references from various textbooks (i.e., Classical Mechanics by Goldestein).
+\end{abstract}
+
+\section{Newton's Mechanics}
+
+\subsection{Mechanics of a Particle}
+
+Newton's mechanics describes the motion of particles or point masses, where a particle configuration can be completely described by its position vector $\vec{r}$ (i.e., an abstract vector... AKA free vector). Thus the coordinate free form of Newton's second law is: $\vec{F} = \frac{d}{dt}(m \frac{d\vec{r}}{dt}) = \frac{d}{dt}(m\vec{v}) = \frac{d\vec{p}}{dt}$ where $m$ is the mass, $\vec{v}$ is the velocity and $\vec{p}$ is the momentum.
+
+\textbf{Conservation Theorem for the Linear Momentum of a Particle}: If the total force $F = 0$ then $\dot{p} = 0$ and the linear momentum is conserved. For a constant mass $m$ the force vector is described in the following manner:
+\begin{equation}
+    \vec{F} = \frac{d}{dt}(m \vec{v}) = m\frac{d\vec{v}}{dt} = m \vec{a}
+\end{equation}
+Where $\vec{a}$ is the acceleration vector. However we can't don anything with the above until we express the above in some coordinate system.
+
+As an example (i.e., 2D Cartesian Coordinates) we can express the point mass as the following:
+\begin{align*}
+    & \vec{r} = r_x \hat{e}_x + r_y \hat{e}_y \\
+    & \vec{r} = \begin{bmatrix} r_x & r_y \end{bmatrix} \begin{bmatrix}\hat{e}_x \\ \hat{e}_y\end{bmatrix}
+\end{align*}
+Where $\begin{bmatrix} r_x & r_y \end{bmatrix}$ are scalar components and $\begin{bmatrix}\hat{e}_x & \hat{e}_y\end{bmatrix}^T$ are unit basis vectors.
+\begin{align*}
+    & \vec{v} = \frac{d\vec{r}}{dt} = \dot{r}_x \hat{e}_x + r_x \dot{\hat{e}}_x + \dot{r}_y \hat{e}_y + r_y \dot{\hat{e}}_y
+\end{align*}
+Described the velocity of the particle, and if the coordinate system is not moving their respective derivatives equate to 0. We can continute taking the second derivative of the position vector of the point mass to come to a generalized form of Newton's law:
+\begin{align*}
+    & \begin{bmatrix}F_x & F_y\end{bmatrix}\begin{bmatrix}\hat{e}_x \\ \hat{e}_y\end{bmatrix} = m \begin{bmatrix}\ddot{r}_x & \ddot{r}_y\end{bmatrix}\begin{bmatrix}\hat{e}_x \\ \hat{e}_y\end{bmatrix}
+\end{align*}
+Likewise, the above can be expressed in any coordinate system (i.e., polar in 2D as another example). \textbf{Newton's formulation is not coordinate invariant}, thus equations of motion can become very unwieldy to write down as things get more complicated. See 2D inverted pendulum as example (TODO may show here).
+
+The \textbf{angular momentum (L)} of a particle about point O in the following fashion:
+\begin{equation}
+    L = r \times p
+\end{equation}
+Where $r$ is the radius vector from $O$ to the particle and the \textbf{moment of force or torque (N)} about $O$ is:
+\begin{equation}
+    N = r \times F
+\end{equation}
+Through derivation we can see $\dot{L} = N$ which leads to the \textbf{Conservation Theorem for the Angular Momentum of a Particle}: If the total torque $N = 0$ then $\dot{L} = 0$ and the angular momentum $L$ is conserved.
+
+Next thing to consider is the work done by an external force $F$ upon a particle from point 1 to 2.
+\begin{equation}
+    W_{12} = \int_{1}^{2} F \cdot ds \to \frac{m}{2} \int \frac{d}{dt}(v^2)dt \to W_{12} = \frac{m}{2}(v_2^2 - v_1^2)
+\end{equation}
+The \textbf{kinetic energy} is described as:
+\begin{equation}
+    T = \frac{m}{2}\vec{v}\cdot\vec{v}
+\end{equation}
+Thus we can see the relationship from work done is equal to the change in kinetic energy:
+\begin{equation}
+    W_{12} = T_2 - T_1
+\end{equation}
+The \textbf{potential energy} of the particle can be described as:
+\begin{equation}
+    F = -\nabla U(r)
+\end{equation}
+Where F (force) is the gradient of some scalar function of position and $V$ is the potential energy. For example gravity has the following potential $U_{g} = m g z$ where $z$ is height and $g$ is the graviational force acting on mass $m$. Another example is the potential of a spring force $F_{spring} = -k x \to -\frac{d}{dx}U_{spring}(x)$ where $U_{spring} = \frac{1}{2} k x^2$.
+
+The relationship between work done and potential energy is the following:
+\begin{equation}
+    W_{12} = U_1 - U_2
+\end{equation}
+
+Intuitively we can think of kinetic energy as the particle in motion and potential energy as "how much" could the particle move based on its current position. So we can see if we have maximal potential energy the kinetic energy will be 0 and vice versa, which leads to the formulation of the \textbf{Energy Conservation Theorem for a Particle}: If the forces acting on a particle are conservative, then the total energy of the particle, $T + V$ is conserved.
+\begin{equation}
+    T_1 + U_1 = T_2 + U_2
+\end{equation}
+The total energy in the system is then described by:
+\begin{equation}
+    E = T + U
+\end{equation}
+ Forces that can be derived from a potential are always \textbf{conserved} since they don't change the total energy. Thus, friction, drag, damping, etc are all non-conservative and they dependent on $U$ and the change in $E$.
+
+\subsection{Rigid Body Kinematics}
+
+\textbf{Rigid body} can be defined as a system of particles in which the distances $r_{ij}$ are fixed and cannot vary with time, the internal forces do no work, and the internal potential must remain constant.
+\begin{equation}
+    ||r_i - r_j||_2 = c_{ij} \text{ where } i, j \in [1, ..., N]
+\end{equation}
+Where $r_i$ and $r_j$ are positions in $\mathbb{R}^3$ and $c_{ij}$ is a distance in $\mathbb{R}$. This is a useful approximation but is never really true in reality, the appropriate way to think about this is frequency of characteristic of the modes of the material. As an example, a lightweight rocket may appear rigid but as force is applied the rocket exterior will bend and oscillate at a frequency distinct in each mode. Thus, you wouldn't want your controller exciting a particular bending mode and shake the rocket apart, but if the flexible dynamics are much faster than the control inputs then can ignore and use rigid body assumptions (useful in robotics). In practice, so model the moment of bending you can setup accelerometers on a beam (like the ski), vibrate it on a sinusoidal pattern then extract the modes (a form of system id).
+
+This leads into the topic of \textbf{constraints} which limit the motion of a system (e.g., rigid body has a constraint on its internal particles having a fixed distance between each other).
+
+Two types of constraints:
+\begin{itemize}
+    \item \textbf{Holonomic} constraints $f(r_1, r_2, ..., t) = 0$ describe conditions of the constraint connecting the coordinates of particles (and time)... example is a rigid body ($(r_i - r_j)^2 - c_{ij}^2 = 0$)
+    \item \textbf{Non-Holonomic} constraints that cannot be expressed in the above formulation (i.e., particle constrained to a surface of a sphere $r^2 - a^2 \ge 0$)
+\end{itemize}
+
+A system of $N$ particles free from constraints has $3N$ independent coordinates or \textbf{Degrees of Freedom (DoF)}. If there exists $k$ holonomic constraints expressed as equations in the above form we then eliminate $k$ of the DoF (i.e., $3N - k$ = DoF). The elimination of dependent coordinates can be expressed as independent variables $q_1, q_2, ..., q_{3N-k}$ in terms of $r_1, r_2, ..., r_k$ expressed by the equations of the following form:
+\begin{equation}
+    r_i = r_i(q_1, r_2, ..., q_{3N-k}, t) \text{ for } i \in \{1, ..., N\}
+\end{equation}
+These are transformation equations from the set $r$ to $q$. If the constraint(s) are not holonomic \textbf{the equations expressing the constraint cannot be used to eliminate the dependent coordinates}. Another method is used to eliminate non-holonomic constraints (i.e., method of lagrangian multipliers).
+
+A rigid body has 6 DoF in total: 3 DoF for translation and 3 DoF for rotation (position and orientation about center of mass). When we look at rotation specifically (i.e., 3x3 matrix) we see that we have 9 equations but 6 constrained equations which leads to 3 DoF.
+
+\subsubsection{Coordinate Frames}
+
+We have two fundamental sets of coordinate frames (or reference frames):
+\begin{enumerate}
+    \item \textbf{Fixed coordinate frame} (i.e., intertial frame or newtonian) denoted as $F$ which is typically Earth fixed. $F = \{\hat{f}_x, \hat{f}_y, \hat{f}_z\}$ defined with mutually orthogonal unit vectors (i.e., some basis vectors)
+    \item \textbf{Body frame} denoted as $B$ which refers to translating and rotating rigid body attached to center of mass or gravity (i.e., $CoG$ / $CoM$). $B = \{\hat{e}_x, \hat{e}_y, \hat{e}_z\}$
+\end{enumerate}
+Furthermore, we define some position of center of mass relative to the origin or point $O$ in the fixed frame as the following: $[\vec{r}^G]_F = x \hat{f}_x + y \hat{f}_y + z \hat{f}_z$, likewise the component $x$ in $F$ maybe described as $x = <\vec{r}^G,\hat{f}_x>$.
+
+\subsubsection{Rotation Matrices and SO(3)}
+
+Given some fixed frame $F = \{\hat{x}_1, \hat{x}_2\}$ and rotated frame $B = \{\hat{y}_1, \hat{y}_2\}$ we want to find the map between $[x_1 x_2] \to [y_1 y_2]$. In this 2D case we can arrive at the mapping between coordinate frames via geomtry or trig but arrive at the following (note positive CCW about Right Handed Coordinate System):
+\begin{align}
+    \begin{bmatrix}y_1 \\ y_2\end{bmatrix} = \begin{bmatrix}\cos(\psi) & \sin(\psi)\\-\sin(\psi) & \cos(\psi)\end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} \notag \\
+    [\vec{r}^G]_B = R_{BF}(\psi)[\vec{r}^G]_F
+\end{align}
+Where $R_{BF}$ describes the rotation matrix from the fixed frame to the body. Likewise, we can invert this matrix to obtain the opposite transformation
+\begin{align*}
+R_{BF}^{-1} &= R_{BF}^T = R_{FB} \quad \text{(i.e., the rotation from the body to the fixed frame)}.
+\end{align*}
+Since $R_{BF}$ is an orthonormal matrix, its inverse is the transpose, and its determinant is $+1$. Note that $-1$ would describe a reflection, which corresponds to a left-handed coordinate system. This is allowable in $O(3)$, but not in $SO(3)$.
+
+Furthermore, we can see that
+\begin{align*}
+R_{BF}^{-1} R_{BF} &= R_{BF}^T R_{BF} = I.
+\end{align*}
+Note that the \textbf{determinant} calculates the volume scaling (i.e., stretching) of the matrix, and a positive value gives the signed volume spanned by the columns. 
+
+\textbf{Attitude} is defined as the rotation between the body-fixed frame and the inertial frame, leading to the topic of \textbf{Lie Group $SO(3)$} (i.e., the special orthogonal group), which defines the group of allowable rotation-based transformations:
+\begin{align*}
+SO(3) &= \left\{ R \in \mathbb{R}^{3 \times 3} \mid R R^T = I, \det R = 1 \right\}.
+\end{align*}
+Here, "S" stands for Special (meaning $\det R = 1$), "O" stands for orthogonal, and "3" indicates $\mathbb{R}^{3 \times 3}$. $SO(3)$ has 9 elements and is 3-DoF with no singularities. It has linear/bilinear kinematics but 3 redundant equations.
+
+These are both \textbf{passive} rotations, where the coordinate frame rotates. The alternative is called an \textbf{active} rotation, where the vector actually rotates. For this course, we focus solely on passive rotations.
+
+
+Expanding the 2D case above to the 3D case we arrive at these three \textbf{Elementary Rotation Matrices} (positive CCW rotation with RH coordinate system):
+\begin{itemize}
+    \item 3-axis Rotation (about $\hat{x}_3$ or yaw axis): \begin{equation}
+        R_3(\psi) = \begin{bmatrix}\cos(\psi) & \sin(\psi) & 0 \\ -\sin(\psi) & \cos(\psi) & 0 \\ 0 & 0 & 1\end{bmatrix}
+    \end{equation}
+    \item 1-axis Rotation (about $\hat{x}_1$ or roll axis): \begin{equation}
+        R_1(\phi) = \begin{bmatrix}1 & 0 & 0 \\ 0 & \cos(\phi) & \sin(\phi) \\ 0 & -\sin(\phi) & \cos(\phi)\end{bmatrix}
+    \end{equation}
+    \item 2-axis Rotation (about $\hat{x}_2$ or pitch axis): \begin{equation}
+        R_2(\theta) = \begin{bmatrix}\cos(\theta) & 0 & -\sin(\theta) \\ 0 & 1 & 0 \\ \sin(\theta) & 0 & \cos(\theta)\end{bmatrix}
+    \end{equation}
+\end{itemize}
+Thus from the above we can see that $R_{BF}$ is a nice linear transformation between the body and intertial frame. One nifty way to describe the columns and rows of $R_{BF}$ is the following:
+\begin{align*}
+    & R_{BF} = \begin{bmatrix} \hat{e}_1 \\ \hat{e}_2 \\ \hat{e}_3 \end{bmatrix} \begin{bmatrix} \hat{f}_1 & \hat{f}_2 & \hat{f}_3 \end{bmatrix} = \begin{bmatrix} \hat{e}_1 \hat{f}_1 & \hat{e}_1 \hat{f}_2 & \hat{e}_1 \hat{f}_3 \\ \hat{e}_2 \hat{f}_1 & \hat{e}_2 \hat{f}_2 & \hat{e}_2 \hat{f}_2 \\ \hat{e}_3 \hat{f}_1 & \hat{e}_3 \hat{f}_2 & \hat{e}_3 \hat{f}_2 \end{bmatrix}
+\end{align*}
+We can see that the rows of $R_{BF}$ describe the body frame expressed in inertial components (i.e., $B$ basis in $F$ components), and likewise the columns of $R_{BF}$ describe the opposite relationship.
+\begin{align*}
+    & \begin{bmatrix} (\hat{e}_1^F)^T & (\hat{e}_2^F)^T & (\hat{e}_3^F)^T\end{bmatrix} = \begin{bmatrix} \hat{f}_1^B & \hat{f}_2^B & \hat{f}_3^B\end{bmatrix}
+\end{align*}
+
+
+\subsubsection{Euler Angles and Rate Kinematics}
+
+Described by 3 numbers, 3 DoF with no constraints, but has singularities (i.e., $\det = 0$ which introduced gimbal lock scenarios) and nonlinear kinematics and composition.
+
+\subsubsection{Quaternions and Quaternion Rate Kinematics}
+
+Described by 4 numbers and 3 DoF with 1 constraint with no singularities, linear/bilinear kinematics, but have "double cover" meaning there are two quaternions which represent the same rotation sequence.
+
+\subsubsection{Axis Angle}
+
+Described by 3 numbers and 3 DoF, but have singularities and nonlinear knematics and composition like Euler Angles.
+
+\subsubsection{Gibbs / Rodrigues Vector}
+
+Described by 3 numbers and 3DoF, have quadratic kinematics and composition but have singularities. 
+
+Modified Rodrigues is described 3 numbers and a singularity only at $360\deg$ where its kinematics are quartic.
+
+\appendix
+
+\section{Appendix: Vectors}
+
+\subsection{Three Fundamental Types of Vectors}
+\begin{itemize}
+    \item \textbf{Free Vectors}: specifies magnitude and direction (i.e., translational velocity)
+    \item \textbf{Sliding Vectors}: specifies the above in addition to line of action relative to a point of rotation (i.e., angular momentum)
+    \item \textbf{Bound Vectors}: specifies point of application (i.e., force acting on an elastic body)
+\end{itemize}
+
+\subsection{How a Vector can be Expressed}
+\begin{align*}
+    & A = M \hat{e}_{A} \\
+    & A = \text{is a vector, } M = \text{is a scalar, }, \hat{e}_{A} = \text{is a unit vector} \\
+    & A = A_1 \hat{e}_1 + A_2 \hat{e}_2 + A_3 \hat{e}_3 \text{ where } \{\hat{e}_1, \hat{e}_2, \hat{e}_3\} \text{ are linearly independent unit vectors}
+\end{align*}
+
+\subsection{Vector Operations}
+\begin{itemize}
+    \item \textbf{Vector Addition}: both commutative ($A + B = B + A$) and associative ($(A + B) + C = A + (B + C)$)
+    \item \textbf{Dot Product}: scalar product of 2 vectors is both commutative ($A \cdot B = B \cdot A$) and distributive ($(A + B) \cdot C = A \cdot C + B \cdot C$)... likewise this describes the angle between two vectors ($|A||B|\cos(\theta)$) which can be thought of how these two vectors align (i.e., orthogonal vectors are $\perp$)
+    \item \textbf{Cross Product}: vector product of 2 vectors is not commutative ($A \times B = -(B \times A)$) but is distributive ($A \times (B + C) = A \times B + A \times C$)... likewise it can be describe as the following $|A||B|\sin(\theta)\hat{k}$ where $\hat{k}$ is an unit vector on some basis of coordinates. Additionally the cross product can be defined in terms of the determinant w.r.t. mutually orthogonal unit vectors (i.e., a basis): $A \times B = \begin{vmatrix} \hat{i} & \hat{j} & \hat{k} \\ A_x & A_y & A_z \\ B_x & B_y & B_z \end{vmatrix}$.
+    \item \textbf{Scalar Triple Product}: $A \cdot (B \times C) = A \cdot \begin{vmatrix} \hat{i} & \hat{j} & \hat{k} \\ B_x & B_y & B_z \\ C_x & C_y & C_z\end{vmatrix} = \begin{vmatrix}A_x & A_y & A_z \\ B_x & B_y & B_z \\ C_x & C_y & C_z\end{vmatrix}$
+    \item \textbf{Vector Triple Product}: $A \times (B \times C) = (A \cdot C) B - (A \cdot B) C$ and is not associative
+    \item \textbf{Vector Derivatives}: $\frac{dA}{dv} = \lim_{\Delta v \to 0} = \frac{\Delta A}{\Delta v}$. Differentiation is distributive: $\frac{d(A + B)}{dv} = \frac{dA}{dv} + \frac{dB}{dv}$. Product rule applies: $\frac{d(gA)}{dv} = \frac{dg}{dv}A + g\frac{dA}{dv}$. Differentiation of a vector w.r.t. some coordinate system: $\frac{dA}{dt} = \frac{dA_x}{dt}\hat{i} + \frac{dA_y}{dt}\hat{j} + \frac{dA_z}{dt}\hat{k}$. Lastly, if the coordinate system is moving we have to apply the product rule: $\frac{dA}{dt} = \frac{dA_1}{dt}\hat{e}_1 + \frac{dA_2}{dt}\hat{e}_2 + \frac{dA_3}{dt}\hat{e}_3 + A_1 \frac{\hat{e}_1}{dt} + A_2 \frac{\hat{e}_2}{dt} + A_3 \frac{\hat{e}_3}{dt}$
+\end{itemize}
+
+\section{Appendix: Integration}
+
+\subsection{Explicit Euler}
+
+\textbf{Explicit Euler Integration} is equivalent to taking the 1st order taylor expansion of $x(t_{n+1})$ about $x(t_n)$
+\begin{equation}
+    x_{n+1}=x(t_n + h) \approx x_n + \frac{dx}{dt}\big|_{x_n}h
+\end{equation}
+Where $h$ is the time step and the derivative evaluated at $x_n$ is $h f(x_n)$. To get a better integration result we can take more terms in this expansion via taylor expansion:
+\begin{equation}
+    x_{n+1}=x(t_n + h) \approx x_n + \frac{dx}{dt}\big|_{x_n}h + \frac{d^2x}{dt^2}\big|_{x_n}\frac{h^2}{2} + ...
+\end{equation}
+Where $\frac{dx}{dt} = f(x)$ and $\frac{d^2x}{dt^2} = \frac{d}{dt}f(x) = \frac{df}{dx}\frac{dx}{dt} = \frac{df}{dx}f(x)$... can continue chain rule for order $n$ (i.e., 3rd order is a tensor and so on). The drawback to this method is that it becomes very computationally expensive.
+
+\subsection{Runge-Kutta Methods}
+
+We want to achieve taylor expansion result and accuracy without computing the higher derivatives of $f(x)$ explicitly. So the key idea is to use multiple evaluations of $f(x)$ over the time step to fit a polynomial to $x(t)$. The number of $f(x)$ evaluations per time step is called the number of stages. So the best we can do in one stage is the following:
+\begin{align*}
+    & x_{n+1} \approx x_n + h f((1 - \alpha)x_n + \alpha x_{n+1}) \text{ where } 0 \le \alpha \le 1 \notag \\
+    & x_{n+1} \approx x_n + h f(x_n) + \alpha h^2 \frac{df}{dx}f(x) + h.o.t\\
+    & \alpha = 0.5 \implies \text{second order method}
+\end{align*}
+This results in the \textbf{Implicit Midpoint}:
+\begin{align}
+    & x_{n+1} \approx x_n + h f(\frac{1}{2}x_n + \frac{1}{2}x_{n+1})
+\end{align}
+The above implicit midpoint does require a newton step to solve (see below) because $x_{n+1}$ is both on LHS and RHS of function being evaluated. However, this has really great energy conservation because the other explicit methods introduce numerical damping leading to drift over time (so implicit handle \textbf{stiff} aka hard to solve ODEs / higher frequencies such as a rigid body systems with constraints generally better). Furthermore, it adheres to the continuous time stability region ($Re(A) < 0$) just like the real system (best to use in simulaiton).
+
+\textbf{Explicit Midpoint} approach avoids root finding and evaluates the midpoint using Euler step:
+\begin{align}
+    & x_{n+1} = x_n + hf(x_n + \frac{h}{2}f(x_n)) \text{ an approximate midpoint } \notag \\
+    & x_{n+1} \approx x_n + hf(x) + \frac{h^2}{2}\frac{df}{dx}f(x) + h.o.t
+\end{align}
+This method is second order and has two stages.
+
+Runge-Kutta can be continued to 3rd, 4th, and etc. order (nominal simulation us RK4 like ode45 in matlab). Essentially you expand the above with h.o.t. weighted by new $\alpha, \beta, \gamma$ terms. The following is how you can build a higher order RK method:
+\begin{itemize}
+    \item Choose the number of stages
+    \item Choose implicit vs/ explicit
+    \item Write down integrator step with undetermined weights
+    \item Write down taylor expansion of integrator step
+    \item Choose weights to match taylor expansion to desired order
+\end{itemize}
+For example RK4 is the 4th order Runge-Kutta integration method. Weights can be chosen in an optimized fashion such as L1 to enforce sparsity and improved computational costs, or other things. The 4th order 4 stage RK method appears as the following:
+\begin{align}
+    & f_1 = f(x_n) \notag \\
+    & f_2 = f(x_n + h a_{21}f_1) \notag \\
+    & f_3 = f(x_n + h a_{31}f_1 + h a_{32}f_2) \notag \\
+    & f_4 = f(x_n + h a_{41}f_1 + h a_{42}f_2 + h a_{43}f_3) \notag \\
+    & x_{n+1} = x_n + h [b_1 f_1 + b_2 f_2 + b_3 f_3 + b_4 f_4] 
+\end{align}
+Each stage uses a past $x$ and at the end you compute $x_{n+1}$. We can organize these coefficients into a matrix A and vector b called "Butcher Tableau" (note A is lower triangular for explicit and full for implicit).
+
+\subsection{Newton's Method}
+
+Another way is a root finding method to determine $x_{n+1}$ called \textbf{Newton's Method} where we do the following algorithmically:
+\begin{align}
+    & r(x_{n+1}) = x_{n+1} - x_{n} - h f(\frac{1}{2}x_n + \frac{1}{2}x_{n+1}) = 0 \notag \\
+    & r(x_{n+1} + \Delta x_{n+1}) \approx r(x_{n+1}) + \frac{dr}{dx}\big|_{x_{n+1}} \Delta x_{n+1} = 0 \notag \\
+    & \implies \Delta x_{n+1} = -(\frac{dr}{dx}\big|_{x_{n+1}})^{-1} r(x_{n+1}) \notag \\
+    & x_{n+1}\leftarrow x_{n+1} + \Delta x_{n+1} \text{ and repeat until convergence (3-4 iterations)}
+\end{align}
+Downside to this is that root-finding is expensive to compute jacobian repeatedly, therefore there is quasi-newton methods to help speed up computation and convergence time.
+
+Reference CMU lectures 4-5 \url{https://github.com/dynamics-simulation-16-715/lecture-notebooks}
+
+\end{document}
