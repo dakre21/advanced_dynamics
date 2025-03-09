@@ -1,0 +1,83 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+%Template version as of 6/27/2024
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{MCEN 5228: Advanced Dynamics Notes}
+
+\author{David Akre}
+
+\maketitle
+
+\begin{abstract}
+These notes will focus on Energy, Work, and Lagrangian Mechanics but include primer material on 6DoF kinematics and dynamics (i.e., Rigid Bodies).
+\end{abstract}
+
+\begin{IEEEkeywords}
+    Energy, Work, Work-Energy Principle, Lagrangian Mechanics, Rigid Bodies
+\end{IEEEkeywords}
+
+\section{Rigid Bodies}
+\subsection{Newtonian Mechanics}
+The process to solve rigid body dynamics problems.
+\begin{enumerate}
+    \item Pick an origin and attach the fixed inertial coordinate frame of reference
+    \item Establish moving coordinate frames to describe each body of interest w.r.t. CoM
+    \item For each body of interest derive the kinematics: $\vec{r}_i$, $\dot{\vec{r}}_i$, $\ddot{\vec{r}}_i$, and angular momentum $H_i$
+    \item Then draw a FBD describing the external forces $F_i$ and moments $M_i$ acting upon rigid body i
+    \item Write out the balance laws and establish equations of motion (6 EQs)
+\end{enumerate}
+
+\textbf{Coordinate Frames}
+
+\begin{itemize}
+   \item \underline{Carteisan Coordinates} (i.e., fixed inertial frame $F = \{\hat{f}_x, \hat{f}_y, \hat{f}_z\}$) \begin{align*}
+   & \vec{r}^P = \begin{bmatrix} x & y & z\end{bmatrix} \begin{bmatrix} \hat{f}_x & \hat{f}_y & \hat{f}_z \end{bmatrix}^T
+   \end{align*}
+   Note, $\frac{d}{dt}\vec{r}^P$ and $\frac{d^2}{dt^2}\vec{r}^P$ components may be non-zero but $\frac{d}{dt}F = 0$ since it is non-moving.
+   \item \underline{Cylindrical Coordinates} a moving frame relative to fixed frame $K_c = \{\hat{e}_r, \hat{e}_\phi, \hat{e}_z\}$ \begin{align*}
+   & \vec{r}^P = r \hat{e}_r + z \hat{e}_z \\
+   & \vec{v}^P = \dot{r}\hat{e}_r + \dot{z}\hat{e}_z + r \dot{\hat{e}}_e + z \dot{\hat{e}}_z 
+   \end{align*}
+Time derivative of a unit verctor is $\hat{e}_i = \vec{\omega} \times \hat{e}_i$ where $\vec{\omega}$ is the angular velocity $[p, q, r]$ of a rigid body containing $\hat{e}_i$, so $\vec{\omega} = \dot{\phi} \hat{e}_z$ (i.e., $\perp$ to rotating plane):
+   \begin{align*}
+    & \begin{bmatrix} \dot{\hat{e}}_r \\ \dot{\hat{e}}_\phi \\ \dot{\hat{e}}_z \end{bmatrix} = \vec{\omega} \times \begin{bmatrix} \hat{e}_r \\ \hat{e}_\phi \\ \hat{e}_z \end{bmatrix} = \begin{bmatrix} \dot{\phi} \hat{e}_\phi \\ -\dot{\phi} \hat{e}_r \\ 0 \end{bmatrix}
+   \end{align*}
+   So $\vec{v}^P = \dot{r} \hat{e}_r + r \dot{\phi} \hat{e}_{\phi} + \dot{z}\hat{e}_z$ and $\vec{a}^P = \dot{\vec{v}}^P$ just continue to take derivative leverage the product rule for the rotating frame. The transformation between fixed and this frame is:
+   \begin{align*}
+    & \begin{bmatrix} \hat{f}_x \\ \hat{f}_y \\ \hat{f}_z \end{bmatrix} = \begin{bmatrix} c\theta & -s\theta & 0 \\ s\theta & c\theta & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} \hat{e}_r \\ \hat{e}_\phi \\ \hat{e}_z \end{bmatrix}
+   \end{align*}
+   \item \underline{Spherical Coordinates} another moving frame relative to the fixed frame $K_s = \{\hat{e}_r, \hat{e}_\phi, \hat{e}_\theta\}$ where $\hat{e}_r \perp \{\hat{e}_\phi, \hat{e}_{\theta}\}$.
+   \begin{align*}
+    & \vec{r}^P = r \hat{e}_r \text{ and } \vec{v}^P = \dot{r} \hat{e}_r + r \dot{\hat{e}}_r
+   \end{align*}
+   Where $\phi$ cases rotation about $\hat{e}_z$ and $\theta$ causes rotation about $\hat{e}_\phi$ so $\vec{\omega} = \dot{\phi} \hat{e}_z + \dot{\phi} \hat{e}_\phi$ where $\hat{e}_z = c\theta \hat{e}_r - s\theta \hat{e}_\theta$ so:
+   \begin{align*}
+    & \vec{\omega} = \dot{\phi}\cos\theta \hat{e}_r - \dot{\phi}\sin\theta\hat{e}_\theta + \dot{\theta} \hat{e}_\phi \\
+    & \dot{\hat{e}}_r = \vec{\omega} \times \hat{e}_r = \dot{\theta} \hat{e}_\theta + \dot{\phi} \sin\theta \hat{e}_\phi \\
+    & \dot{\hat{e}}_\theta = - \dot{\theta} \hat{e}_r + \dot{\phi} \cos\theta \hat{e}_\phi \\
+    & \dot{\hat{e}}_\phi = - \dot{\phi} \sin \theta \hat{e}_r - \dot{\phi} \cos \theta \hat{e}_\theta \\
+    & \vec{v}^P = \dot{r} \hat{e}_r + r \dot{\theta} \hat{e}_\theta + r \dot{\phi} \sin \theta \hat{e}_\phi
+   \end{align*}
+   The transformation from spherical to cartesian is the following:
+   \begin{align*}
+    \begin{bmatrix} \hat{f}_x \\ \hat{f}_y \\ \hat{f}_z \end{bmatrix} = \begin{bmatrix} s\theta c\phi & c\theta c\phi & -s\phi \\ s\theta s\phi & c\theta s\phi & c\phi \\ c\theta & -s\theta & 0 \end{bmatrix}\begin{bmatrix} \hat{e}_r \\ \hat{e}_\theta \\ \hat{e}_\phi \end{bmatrix}
+   \end{align*}
+\end{itemize}
+\textbf{Newton's EoM} for rigid bodies the forces of interaction cancel so external forces must equal the inertial.
+\begin{align*}
+    & m_i \ddot{r}_i = F_i \quad i \in [1, ..., n]
+\end{align*}
+\textbf{Conservation of Momentum} rate of change of a system is euqal to the sum of all external forces acting on points of the system
+
+\end{document}

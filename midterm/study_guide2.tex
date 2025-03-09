@@ -1,0 +1,69 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+%Template version as of 6/27/2024
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{MCEN 5228: Advanced Dynamics Notes}
+
+\author{David Akre}
+
+\maketitle
+
+\begin{abstract}
+These notes will focus on Energy, Work, and Lagrangian Mechanics but include primer material on 6DoF kinematics and dynamics (i.e., Rigid Bodies).
+\end{abstract}
+
+\begin{IEEEkeywords}
+    Energy, Work, Work-Energy Principle, Lagrangian Mechanics, Rigid Bodies
+\end{IEEEkeywords}
+
+\section{Rigid Bodies}
+\subsection{Kinematics}
+There are 3 DoF for translation and 3 DoF for rotation of rigid bodies: $\mathbb{R}^3 \times SO(3)$ where $SO(3) = \{R \in \mathbb{R}^{3 \times 3}: R R^T = I, \det R = 1\}$ which is a group of orthogonal rotation matrices where $R^{-1}=R^T$. We can parameterize the orientation of a rigid body and acquire the \textbf{rotational kinematics} by the following:
+\begin{itemize}
+    \item Full SO(3) matrix (9 linear ODEs no singularities )\begin{align*}
+        & R_{BF}^{3 \times 3}: \vec{r}_F \to \vec{r}_B, \quad \dot{R}_{BF} = -S(\vec{\omega}_{B/F}) R_{BF} \\
+        & S = \vec{\omega}_{B/F} \times \vec{r}_F = \begin{bmatrix} 0 & -\omega_3 & \omega_2 \\ \omega_3 & 0 & -\omega_1 \\ -\omega_2 & \omega_1 & 0 \end{bmatrix} 
+    \end{align*}
+    Where $\vec{\omega}_{B/F}$ is the angular velocity of the body frame B relative to the fixed inertial frame F. Note $R_{BF}^T = R_{FB}$.
+    \item Quaternions (4 linear ODEs no singularities) \begin{align*}
+        & q = \begin{bmatrix} q_o \\ \hat{q} \end{bmatrix} q_o \in \mathbb{R}, \hat{q} \in \mathbb{C}^3, \quad \dot{q} = \frac{1}{2}\begin{bmatrix}0 & -(\vec{\omega}_B)^T \\ \vec{\omega}_{B/F} & -S(\vec{\omega}_B) \end{bmatrix} q
+    \end{align*}
+    \item Euler Angles (3 nonlinear ODEs w/ singularities) \begin{align*}
+        & H = \begin{bmatrix} \phi & \theta & \psi \end{bmatrix}, \dot{H} = E(H) \omega_{B/F}, E: \begin{bmatrix} p \\ q \\ r \end{bmatrix} \to \begin{bmatrix} \dot{\phi} \\ \dot{\theta} \\ \dot{\psi}\end{bmatrix}
+    \end{align*}
+    3-2-1 rotation is: $R_{BF} = R_1{\phi}[\underline{R_2{\theta}\underline{[R_3(\psi)\vec{r}_F]}_{RI_1}]}_{RI_2}$.
+    \begin{align*}
+        & R_3(\psi) = \begin{bmatrix} c\psi & s\psi & 0 \\ -s\psi & c\psi & 0 \\ 0 & 0 & 1\end{bmatrix}, R_2(\theta) = \begin{bmatrix} c\theta & 0 & -s\theta \\ 0 & 1 & 0 \\ s\theta & 0 & c\theta\end{bmatrix}
+    \end{align*}
+    \begin{align*}
+        R_1(\phi) = \begin{bmatrix} 1 & 0 & 0 \\ 0 & c\phi & s\phi \\ 0 & -s\phi & c\phi\end{bmatrix}
+    \end{align*}
+    So the mapping $E = \begin{bmatrix} p \\ q \\ r \end{bmatrix} = \begin{bmatrix} \dot{\phi} \\ 0 \\ 0 \end{bmatrix} + RI_2\begin{bmatrix}0 \\ \dot{\theta} \\ 0 \end{bmatrix} + RI_1\begin{bmatrix}0 \\ 0 \\ \dot{\psi}\end{bmatrix}$
+\end{itemize}
+The \textbf{translational kinematics} are simply:
+\begin{align*}
+    & \vec{v}^G_B = \begin{bmatrix} u & v & w\end{bmatrix}^T \text{ attached to center of mass on B } \\
+    & \vec{v}^G_F = \begin{bmatrix} \dot{x} & \dot{y} & \dot{z} \end{bmatrix}^T = R_{FB} [\vec{v}^G_B]
+\end{align*}
+\subsection{Coordinate Frames}
+\subsubsection{Cartesian Coordinates}
+Static, non-moving, fixed inertial frame is typically constructed using this orthogonal basis $F = \{\hat{f}_x, \hat{f}_y, \hat{f}_z\}$.
+\begin{align*}
+    & \vec{r}^p = x \hat{f}_x + y \hat{f}_y + z \hat{f}_z \\
+    & \vec{v}^p = \dot{\vec{r}} = \dot{x} \hat{f}_x + \dot{y} \hat{f}_y + \dot{z} \hat{f}_z \\
+    & \vec{a}^P = \dot{\vec{v}} = \ddot{\vec{r}} = \ddot{x} \hat{f}_x + \ddot{y} \hat{f}_y + \ddot{z} \hat{f}_z \\
+    & \dot{\hat{f}}_x = \dot{\hat{f}}_y = \dot{\hat{f}}_z = 0
+\end{align*}
+
+\end{document}

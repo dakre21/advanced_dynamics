@@ -1,0 +1,199 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage[a4paper, total={8in, 11in}]{geometry}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+\title{MCEN 5228: Advanced Dynamics Notes}
+
+\author{David Akre}
+
+\maketitle
+
+\section{Mechanics of a Particle $\to$ Rigid Body}
+Let $\vec{r}_{P/O}$ be the radius vector of some particle $P$ relative to an arbitrary origin $O$ with respect to a fixed inertial frame $F$ that is not rotating $F = \{\hat{f}_x, \hat{f}_y, \hat{f}_z\} \in \mathbb{E}^3$, we have the following relationships:
+\begin{align}
+    & \frac{d}{dt}(\vec{r}_{P/O}) = \vec{v}_{P/O} \\
+    & \frac{d^2}{dt^2}(\vec{r}_{P/O}) = \frac{d}{dt}{\vec{v}_{P/O}} = \vec{a}_{P/O}
+\end{align}
+Linear Momentum $\vec{p}_{P/O}$ and Newton's second law of motion are:
+\begin{align}
+    & \vec{p}_{P/O} = m \vec{v}_{P/O} \\
+    & \vec{F}_{P/O} = \dot{\vec{p}}_{P/O}
+\end{align}
+This leads to the 1st law of conservation namely \textbf{conservation of linear momentum}: $\vec{F}_{P/O} = 0 \implies \dot{\vec{p}}_{P/O} = 0$. The angular momentum $\vec{H}_{P/O}$ and moment of force (torque) $\vec{M}_{P/O}$ are:
+\begin{align}
+    & \vec{H}_{P/O} = \vec{r}_{P/O} \times \vec{p}_{P/O} \\
+    & \vec{M}_{P/O} = \vec{r}_{P/O} \times \vec{F}_{P/O} = \frac{d}{dt}\vec{H}_{P/O}
+\end{align}
+And this leads to the 2nd law of conservation \textbf{conservation of angular momentum}: $\vec{M}_{P/O} = 0 \implies \frac{d}{dt}\vec{H}_{P/O} = 0$ where $\vec{M}_{P/O} \equiv \frac{d}{dt}\vec{H}_{P/O}$. For a rigid body we have the following:
+\begin{align}
+    & \vec{M}_P = m \vec{r}_{G/P} + I_g \dot{\vec{\omega}}
+\end{align}
+$I_g$ is the inertial tensor w.r.t the center of gravity and $\dot{\vec{\omega}} = \begin{bmatrix} \dot{p} & \dot{q} & \dot{r} \end{bmatrix}$ is the time rate of change of the angular velocity of the body in motion. The MoI about any axis parallel to the CoM is given by \textbf{parallel axis theorem} ($d$ is the $\perp$ distance between CoM and MoI):
+\begin{align}
+    & I = I_G + m d^2
+\end{align}
+
+\subsection{Solve Rigid Body Dynamics via Newton's Method}
+\begin{enumerate}
+    \item Pick an origin for F then body frame(s) for the body(s)
+    \item For each body of interest derive the kinematics: $\vec{r}_i$, $\dot{\vec{r}}_i$, $\ddot{\vec{r}}_i$, and angular momentum $\vec{H}_i$
+    \item Then draw a FBD describing the external forces $\vec{F}_i$ and moments $\vec{M}_i$ acting upon rigid body $i$ (note positive moment and rotation are CCW)
+    \item Write out the balance laws and solve EoM 
+    \begin{align}
+        & \sum_i \vec{F}_i = m_i \vec{a}_i \\
+        & \sum_i \vec{M}_i = \frac{d}{dt}\vec{H}_i
+    \end{align} 
+\end{enumerate}
+
+\textbf{Useful notes} 
+\begin{itemize}
+    \item \textbf{Time derivative of coordinate (unit) vectors:} $\dot{\hat{e}}_i = \vec{\omega} \times \hat{e}_i$ (e.g., $\dot{\hat{e}}_r = \dot{\theta}\hat{e}_\theta$ and $\dot{\hat{e}}_\theta = -\dot{\theta}\hat{e}_r$ where $\dot{\theta} = \omega$)
+    \item \textbf{Transport Theorem:} $\dot{\vec{v}}$ relative to a rotating frame
+    \begin{align}
+        & \vec{v}_F = \dot{\vec{r}}_B + \vec{\omega}_{B/F} \times \vec{r}_B
+    \end{align}
+\end{itemize}
+\subsection{Holonomic Constraints}
+Holonomic constraints are expressed in the form:
+\begin{equation}
+    q(\vec{r}_1, \vec{r}_2, \ldots, \vec{r}_N, t) = 0
+\end{equation}
+These constraints describe the allowable configurations of particles or systems of particles. Common examples include:
+\begin{itemize}
+    \item A particle constrained to move along a circle: $x^2 + y^2 = r^2$ \begin{align}
+        & x = r\cos\theta \notag \\
+        & y = r\sin\theta 
+    \end{align}
+    Where $q_1 = \theta$ is the generalized coordinate (e.g., $\vec{r}(\theta)$)
+    \item A rigid body: $||\vec{r}_i - \vec{r}_j||^2 - c_{ij} = 0$, where $c_{ij}$ is constant 
+    \item A particle constrained to move along a sphere: $x^2 + y^2 + z^2 = r^2$ \begin{align}
+        & x = r\sin\phi\cos\theta \notag \\
+        & y = r\sin\phi\sin\theta \notag \\
+        & z = r\cos\phi
+    \end{align}
+    Where $q_1 = \phi$ and $q_2 = \theta$ are the generalized coordinates (e.g., $\vec{r}(\phi, \theta)$)
+\end{itemize}
+Non-holonomic constraints cannot be expressed in this form. When holonomic constraints are present, particle positions $\vec{r}_i$ are no longer independent, and the system dynamics become coupled. Problems with holonomic constraints can be solved by transforming to generalized coordinates:$\{q_1, q_2, \ldots, q_{n}\}$ where $n = 3N - k$ is the number of particles and $k$ is the number of constraints. This gives a system with $n$ degrees of freedom (DOF). The original position vectors can be expressed in terms of these generalized coordinates:
+\begin{equation}
+    \vec{r}_i = \vec{r}_i(q_1, q_2, \ldots, q_{n}), \quad i = 1,2,\ldots,n
+\end{equation}
+Velocities $\vec{v}_i$ of these $q_j$ are (where $\dot{q}_j$ are generalized velocities):
+\begin{align}
+    & \vec{v}_i = \frac{d\vec{r}_i}{dt} \to \sum_{j=1}^n\frac{\partial \vec{r}_i}{\partial q_j}\dot{q}_j + \frac{\partial \vec{r}_i}{dt} \quad i = 1,2,\ldots,n \\
+    & \frac{\partial \vec{v}_i}{\partial \dot{q}_j} = \frac{\partial \vec{r}_i}{\partial q_j} \quad i = 1,\ldots, N \text{ and } j = 1, \ldots, n
+\end{align}
+
+\section{Work}
+A \textbf{virtual displacement} results from a change in the configuration space of the system from an infinitesimal change of the coordinates $\delta \vec{r}_i$. If the system is in equilibrium, the total force on each particle vanishes $\vec{F}_i = 0$, thus $\vec{F}_i \cdot \delta \vec{r}_i = 0$ which is the \textbf{virtual work} of the force $\vec{F}_i$ in the displacement $\delta \vec{r}_i$. So any applied force must vanish if the system is in equilibrium (i.e., \textbf{Principle of Virtual Work}):
+\begin{align}
+    & \delta W = \sum_i \vec{F}_i \cdot \delta \vec{r}_i + \sum_i \vec{g}_i \cdot \delta \vec{r}_i = 0
+\end{align}
+Where $\delta W$ is the \textbf{virtual work}, $\sum_i \vec{F}_i \cdot \delta \vec{r}_i$ is the sum of applied forces in the direction of $\vec{r}_i$, and $\sum_i \vec{g}_i \cdot \delta \vec{r}_i$ are the constraint forces. Thus we can see if a particle has some set of holonomic constraints the these $\vec{F}_i \perp \vec{r}_i$ (i.e., forces are perpendicular to the direction of the constraint) thus performing no virtual work. The above is useful in statics problems, but can be extended to dynamics problems in the following manner (sum of the forces equals the intertial force):
+\begin{align}
+    & \vec{F}_i + g_i = m \dot{\vec{p}_i} \to \vec{F}_i + \vec{g}_i - \dot{\vec{p}}_i = \underbar{0} \notag \\
+    & \sum_i^N (\vec{F}_i - \dot{\vec{p}}_i) \cdot \delta \vec{r}_i = 0 \\
+    & \sum_i^N (\vec{F}_i \cdot \delta \vec{r}_i) - \sum_i^N(m_i \ddot{r}_i \cdot \delta \vec{r}_i) = 0
+\end{align}
+The \textbf{effective force} in the first line include constraint forces, but when they vanish we obtain \textbf{D'Alembert's Principle} in the 2nd line, and 3rd line breaks up \textbf{virtual work} due to external forces subtracted by inertial forces.
+
+\subsection{Solve for Equilibrium Condition}
+When \underline{constraint forces do no work} then $\delta W = \sum_i \vec{F}_i \cdot \delta\vec{r}_i = 0$ the process for solving $q$ s.t. no net work is done:
+\begin{enumerate}
+    \item Draw free body diagram describing both $\vec{F}_i$ and $\delta \vec{r}_i$ (along constrained directions and use \underline{datum line for equilibrium pose})
+    \item Project $\vec{F}_i$ and $[\vec{r}_i, \delta \vec{r}_i]$ pair on an orthogonal basis (i.e,. $\{\hat{i}, \hat{j}, \hat{k}\}$)
+    \item Now apply $\delta W = \sum_i \vec{F}_i \cdot \delta \vec{r}_i = 0$
+    \item Transform $r \to q$ (i.e., pick $\theta$ to describe $(x,y) \in \mathbb{E}^2$) and $\delta \vec{r}_i$ $\to$ $\{q_1, ..., q_{3n-k}\}$ (trig, calc chain rule, and \underline{substitute all vars})
+    \item Solve for the equilibrium position (i.e., $q_i$) when $\delta W = 0$
+\end{enumerate}
+\textbf{Incremental Work} of a force $\vec{F}_i$ on a particle undergoing incremental displacement $d\vec{r}_i$ is described as:
+\begin{align}
+    & dW = \vec{F}_i \cdot d\vec{r}_i = \|\vec{F}_i\|\|d\vec{r}_i\|\cos\theta
+\end{align}
+\textbf{Virtual Work} assumes $\forall \vec{F}_i = \text{const} \implies \delta \vec{r}_i$ occurs. The \textbf{Total Work} of a force $\vec{F}_i$ on a particle during finite displacement $\vec{r}_1 \to \vec{r}_2$:
+\begin{align}
+    & W_{1 \to 2} = \int_{\vec{r}_1}^{\vec{r}_2} \vec{F}_i \cdot d\vec{r} \to \frac{m}{2} (v_2^2 - v_1^2) = (T_2 - T_1)
+\end{align}
+Thus the work done through some finite displacement results in the change in \textbf{kinetic energy} ($\Delta T = T_2 - T_1$) which describes the \textbf{work-energy principle} (i.e., $W_{1 \to 2} = \Delta T$), and if the forces are conservative the work done is the change in \textbf{potential energy} ($\Delta V = V_1 - V_2$ note $\vec{F}^C = -\nabla V = \frac{\partial V}{\partial x}\hat{i} + \frac{\partial V}{\partial y} \hat{j} + \frac{\partial V}{\partial z}\hat{k} \to W_{1 \to 2}=\int_{\vec{r}_1}^{\vec{r}_2}-\nabla \vec{V} \cdot d\vec{r}$) which leads to the \textbf{Energy Conservation Theorem}: $\Delta T + \Delta V = \Delta E = 0$ energy is conserved if all forces that are acting on the particle are conserved. If there are non-conservative forces acting on the system then the work performed does depend on the whole trajectory so in full the relationship looks as follows:
+\begin{align}
+    & W_{1 \to 2} = W_{1 \to 2}^{NC} + W_{1 \to 2}^{C} \text{ where } W_{1 \to 2}^{NC} = \Delta T + \Delta V
+\end{align}
+\subsection{Solve $W_{1 \to 2}$}
+\begin{enumerate}
+    \item Draw FBD describing all $\vec{F}_i$ and $[\vec{r}_i, d\vec{r}_i]$
+    \item For each $F_i^C$ compute $W_{1\to2}$ and $F_i^{NC}$ compute $W_{\text{tracjectory}}$
+    \item Sum the result to obtain $W_{1 \to 2}$ note the change in potential energies from datum is simply the displacement (e.g., $\Delta h$ or $\Delta x$)
+    \item When the system is "at rest" $\Delta E = 0$ and energy is conserved which we can then solve for some dynamics variable (i.e., spring constant $k$)
+\end{enumerate}
+\section{Energy}
+\textbf{Kinetic Energy} for a particle and rigid body (split into translation + rotation)
+\begin{align}
+    & T = \frac{m}{2}\|\vec{v}\|^2 \\
+    & T = \frac{1}{2}(m\|\vec{v}_G\|^2 + I_G\|\vec{\omega}\|^2)
+\end{align}
+\textbf{Potential Energy} is defined for conservative forces such as springs and gravity. The potential energy for a spring is given as:
+\begin{align}
+    & V = \frac{1}{2}k\delta^2 \text{ where } \delta = \|\vec{r}\| - \delta_0 \text{ stretch of the spring}
+\end{align}
+Where the force is $\vec{F}_s = -k (r - \delta_0)$. Then for gravity is defined as:
+\begin{align}
+    & V = m g h + \text{const} \text{ where $h$ is the height}
+\end{align}
+The force of gravity is $\vec{F}_g = -mg\hat{j}$.
+\section{Euler Lagrange Equations}
+Picking up from equation 20, \textbf{D'Alembert's Principle} virtual work due to inertial force can be writted in terms of $T$ (scalar):
+\begin{align}
+    & \sum_j^n [\frac{d(\partial T)}{dt(\partial \dot{q}_j)} - \frac{\partial T}{\partial q_j}] \delta q_j
+\end{align}
+Then the virtual work due to external forces can be broken up into conservative and non-conservative forces by introducing generalized forces $Q_j$ (note $\delta W = \vec{F}_i^C \cdot \delta \vec{r}_i = -\delta V_i$ and $\vec{F}_i = \vec{F}_i^{NC} + \vec{F}_i^C$)
+\begin{align}
+    & Q_j = \sum_i^N \vec{F}_i \cdot \frac{\partial \vec{r}_i}{\partial q_j} \quad j \in [1, ..., n] \\
+    & \sum_i^N \vec{F}_i \cdot \delta \vec{r}_i \to \sum_j^n Q_j^{NC} \delta q_j - \underline{\delta \sum_i^N V_i} \\
+    & \sum_j^n[Q_j^{NC} - \frac{\partial V}{\partial q_j}]\delta q_j
+\end{align}
+The underline section in 30 reduces to the total potential energy of the system $V$ in 31 and $Q_j = Q_j^{NC} - \frac{\partial V}{\partial q_j}$. Thus if the virtual generalized coordinated of the displacement $\delta q_j$ are arbitrary and independent then the following is satisfied when $\delta q_j = \emptyset$:
+\begin{align}
+    & \sum_j^n [(Q_j^{NC} - \frac{\partial V}{\partial q_j}) - \frac{d}{dt}\frac{\partial T}{\partial \dot{q}_j} - \frac{\partial T}{\partial q_j}] \delta q_j = 0
+\end{align}
+The \textbf{System's Lagrangian} and set of $n$ system  of ODEs w.r.t. $\{q_j\}$:
+\begin{align}
+    & L = T - V \\
+    & \frac{d}{dt}\frac{\partial L}{\partial \dot{q}_j} - \frac{\partial L}{\partial q_j} = Q_j^{NC} \quad j \in [1, ..., n]
+\end{align}
+Note $\frac{\partial V}{\dot{q}_j} = 0$ in $L$.
+
+\section{General Math}
+Cross (vector) product let $\vec{A}, \vec{B}, \vec{C} \in \mathbb{R}^3$:
+\begin{align}
+    & \vec{A} \times \vec{B} = \begin{vmatrix} \hat{i} & \hat{j} & \hat{k} \\ a_1 & a_2 & a_3 \\ b_1 & b_2 & b_3 \end{vmatrix} = \|\vec{A}\|\|\vec{B}\|\sin\theta \hat{n}
+\end{align}
+Dot product:
+\begin{align}
+    & \vec{A} \cdot \vec{B} = a_1b_1 + a_2 b_2 + a_3 b_3 = \|\vec{A}\|\|\vec{B}\|\cos\theta
+\end{align}
+Triple vector product:
+\begin{align}
+    & \vec{A} \times (\vec{B} \times \vec{C}) = (\vec{A} \cdot \vec{C}) \vec{B} - (\vec{A} \cdot \vec{B}) \vec{C} 
+\end{align}
+Integration by parts:
+\begin{align}
+    & \int u \, dv = uv - \int v \, du
+\end{align}
+Chain rule $h(t) = f(g(t))$:
+\begin{align}
+    & \dot{h}(t) = \frac{df}{dg}\frac{dg}{dt}
+\end{align}
+Product rule:
+\begin{align}
+    & \frac{d(uv)}{dt} = \frac{du}{dt}v + u\frac{dv}{dt}
+\end{align}
+
+\end{document}
