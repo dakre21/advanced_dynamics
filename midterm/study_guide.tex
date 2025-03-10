@@ -15,8 +15,6 @@
 
 \author{David Akre}
 
-\maketitle
-
 \section{Mechanics of a Particle $\to$ Rigid Body}
 Let $\vec{r}_{P/O}$ be the radius vector of some particle $P$ relative to an arbitrary origin $O$ with respect to a fixed inertial frame $F$ that is not rotating $F = \{\hat{f}_x, \hat{f}_y, \hat{f}_z\} \in \mathbb{E}^3$, we have the following relationships:
 \begin{align}
@@ -41,7 +39,10 @@ $I_g$ is the inertial tensor w.r.t the center of gravity and $\dot{\vec{\omega}}
 \begin{align}
     & I = I_G + m d^2
 \end{align}
-
+\textbf{Transport Theorem:} $\dot{\vec{v}}$ relative to a rotating frame
+    \begin{align}
+        & \vec{v}_F = \dot{\vec{r}}_B + \vec{\omega}_{B/F} \times \vec{r}_B
+    \end{align}
 \subsection{Solve Rigid Body Dynamics via Newton's Method}
 \begin{enumerate}
     \item Pick an origin for F then body frame(s) for the body(s)
@@ -53,15 +54,38 @@ $I_g$ is the inertial tensor w.r.t the center of gravity and $\dot{\vec{\omega}}
         & \sum_i \vec{M}_i = \frac{d}{dt}\vec{H}_i
     \end{align} 
 \end{enumerate}
-
-\textbf{Useful notes} 
+\subsection{Moving Coordinate Frames}
 \begin{itemize}
-    \item \textbf{Time derivative of coordinate (unit) vectors:} $\dot{\hat{e}}_i = \vec{\omega} \times \hat{e}_i$ (e.g., $\dot{\hat{e}}_r = \dot{\theta}\hat{e}_\theta$ and $\dot{\hat{e}}_\theta = -\dot{\theta}\hat{e}_r$ where $\dot{\theta} = \omega$)
-    \item \textbf{Transport Theorem:} $\dot{\vec{v}}$ relative to a rotating frame
-    \begin{align}
-        & \vec{v}_F = \dot{\vec{r}}_B + \vec{\omega}_{B/F} \times \vec{r}_B
-    \end{align}
-\end{itemize}
+\item \underline{Cylindrical Coordinates} a moving frame relative to fixed frame $K_c = \{\hat{e}_r, \hat{e}_\phi, \hat{e}_z\}$ \begin{align*}
+    & \vec{r}^P = r \hat{e}_r + z \hat{e}_z \\
+    & \vec{v}^P = \dot{r}\hat{e}_r + \dot{z}\hat{e}_z + r \dot{\hat{e}}_e + z \dot{\hat{e}}_z 
+    \end{align*}
+ Time derivative of a unit verctor is $\hat{e}_i = \vec{\omega} \times \hat{e}_i$ where $\vec{\omega}$ is the angular velocity $[p, q, r]$ of a rigid body containing $\hat{e}_i$, so $\vec{\omega} = \dot{\phi} \hat{e}_z$ (i.e., $\perp$ to rotating plane):
+    \begin{align*}
+     & \begin{bmatrix} \dot{\hat{e}}_r & \dot{\hat{e}}_\phi & \dot{\hat{e}}_z \end{bmatrix}^T = \vec{\omega} \times \begin{bmatrix} \hat{e}_r & \hat{e}_\phi & \hat{e}_z \end{bmatrix}^T = \begin{bmatrix} \dot{\phi} \hat{e}_\phi & -\dot{\phi} \hat{e}_r & 0 \end{bmatrix}^T
+    \end{align*}
+    So $\vec{v}^P = \dot{r} \hat{e}_r + r \dot{\phi} \hat{e}_{\phi} + \dot{z}\hat{e}_z$ and $\vec{a}^P = \dot{\vec{v}}^P$ just continue to take derivative leverage the product rule for the rotating frame. The transformation between fixed and this frame is:
+    \begin{align*}
+     & \begin{bmatrix} \hat{f}_x \\ \hat{f}_y \\ \hat{f}_z \end{bmatrix} = \begin{bmatrix} c\theta & -s\theta & 0 \\ s\theta & c\theta & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} \hat{e}_r \\ \hat{e}_\phi \\ \hat{e}_z \end{bmatrix}
+    \end{align*}
+    \item \underline{Spherical Coordinates} another moving frame relative to the fixed frame $K_s = \{\hat{e}_r, \hat{e}_\phi, \hat{e}_\theta\}$ where $\hat{e}_r \perp \{\hat{e}_\phi, \hat{e}_{\theta}\}$.
+    \begin{align*}
+     & \vec{r}^P = r \hat{e}_r \text{ and } \vec{v}^P = \dot{r} \hat{e}_r + r \dot{\hat{e}}_r
+    \end{align*}
+    Where $\phi$ cases rotation about $\hat{e}_z$ and $\theta$ causes rotation about $\hat{e}_\phi$ so $\vec{\omega} = \dot{\phi} \hat{e}_z + \dot{\phi} \hat{e}_\phi$ where $\hat{e}_z = c\theta \hat{e}_r - s\theta \hat{e}_\theta$ so:
+    \begin{align*}
+     & \vec{\omega} = \dot{\phi}\cos\theta \hat{e}_r - \dot{\phi}\sin\theta\hat{e}_\theta + \dot{\theta} \hat{e}_\phi \\
+     & \dot{\hat{e}}_r = \vec{\omega} \times \hat{e}_r = \dot{\theta} \hat{e}_\theta + \dot{\phi} \sin\theta \hat{e}_\phi \\
+     & \dot{\hat{e}}_\theta = - \dot{\theta} \hat{e}_r + \dot{\phi} \cos\theta \hat{e}_\phi \\
+     & \dot{\hat{e}}_\phi = - \dot{\phi} \sin \theta \hat{e}_r - \dot{\phi} \cos \theta \hat{e}_\theta \\
+     & \vec{v}^P = \dot{r} \hat{e}_r + r \dot{\theta} \hat{e}_\theta + r \dot{\phi} \sin \theta \hat{e}_\phi
+    \end{align*}
+    The transformation from spherical to cartesian is the following:
+    \begin{align*}
+     \begin{bmatrix} \hat{f}_x \\ \hat{f}_y \\ \hat{f}_z \end{bmatrix} = \begin{bmatrix} s\theta c\phi & c\theta c\phi & -s\phi \\ s\theta s\phi & c\theta s\phi & c\phi \\ c\theta & -s\theta & 0 \end{bmatrix}\begin{bmatrix} \hat{e}_r \\ \hat{e}_\theta \\ \hat{e}_\phi \end{bmatrix}
+    \end{align*}
+ \end{itemize}
+
 \subsection{Holonomic Constraints}
 Holonomic constraints are expressed in the form:
 \begin{equation}
@@ -134,32 +158,39 @@ Thus the work done through some finite displacement results in the change in \te
     \item When the system is "at rest" $\Delta E = 0$ and energy is conserved which we can then solve for some dynamics variable (i.e., spring constant $k$)
 \end{enumerate}
 \section{Energy}
-\textbf{Kinetic Energy} for a particle and rigid body (split into translation + rotation)
+\textbf{Kinetic Energy} for a particle is the work required to accelerate from rest to its current velocity $v(t)$:
 \begin{align}
-    & T = \frac{m}{2}\|\vec{v}\|^2 \\
-    & T = \frac{1}{2}(m\|\vec{v}_G\|^2 + I_G\|\vec{\omega}\|^2)
+    & T = \frac{m}{2}\|\vec{v}\|^2 = \frac{1}{2}m \vec{v} \cdot \vec{v}
 \end{align}
-\textbf{Potential Energy} is defined for conservative forces such as springs and gravity. The potential energy for a spring is given as:
+Where $\vec{v}$ expressed in any orthogonal coordinate frame. For a rigid body, $T$ is the following (split into translational and rotational components)
 \begin{align}
-    & V = \frac{1}{2}k\delta^2 \text{ where } \delta = \|\vec{r}\| - \delta_0 \text{ stretch of the spring}
+    & T = \frac{1}{2}(\vec{v}_g \cdot \vec{p}_B + \vec{\omega}_B \cdot \vec{H}_g) = \frac{1}{2}I_g ||\vec{\omega}||^2
 \end{align}
-Where the force is $\vec{F}_s = -k (r - \delta_0)$. Then for gravity is defined as:
+Where $\vec{H}_g = I_g \vec{\omega}_B$, and for a fixed point of rotation about $O$ is $T = \frac{1}{2}\omega^B \cdot \vec{H}_O$.
+
+\textbf{Potential Energy} conservative forces are the source for most potential energy $V$ (e.g., springs and gravity). The potential energy for a spring:
 \begin{align}
+    & \vec{F}_s = -k \Delta x \hat{i} = -k(x - x_0)\hat{i} = -\frac{\partial V}{\partial x} \hat{i} \\
+    & V(x) = \frac{1}{2} k (x - x_0)^2
+\end{align}
+Where $\Delta x = x - x_0$ is the stretch of the spring, $x_0$ is the unstretched length, $x$ is the displacement. Then for gravity is defined as the weight of a particle or rigid body:
+\begin{align}
+    & \vec{F}_g = -\frac{\partial V}{\partial y} \hat{j} = - m g \hat{j} \\
     & V = m g h + \text{const} \text{ where $h$ is the height}
 \end{align}
-The force of gravity is $\vec{F}_g = -mg\hat{j}$.
+Where the constant is determined by choice of level.
 \section{Euler Lagrange Equations}
 Picking up from equation 20, \textbf{D'Alembert's Principle} virtual work due to inertial force can be writted in terms of $T$ (scalar):
 \begin{align}
     & \sum_j^n [\frac{d(\partial T)}{dt(\partial \dot{q}_j)} - \frac{\partial T}{\partial q_j}] \delta q_j
 \end{align}
-Then the virtual work due to external forces can be broken up into conservative and non-conservative forces by introducing generalized forces $Q_j$ (note $\delta W = \vec{F}_i^C \cdot \delta \vec{r}_i = -\delta V_i$ and $\vec{F}_i = \vec{F}_i^{NC} + \vec{F}_i^C$)
+Then the virtual work due to external forces can be broken up into conservative and non-conservative forces by introducing \textbf{generalized forces} $Q_j$ (note $\delta W = \vec{F}_i^C \cdot \delta \vec{r}_i = -\delta V_i$ and $\vec{F}_i = \vec{F}_i^{NC} + \vec{F}_i^C$)
 \begin{align}
     & Q_j = \sum_i^N \vec{F}_i \cdot \frac{\partial \vec{r}_i}{\partial q_j} \quad j \in [1, ..., n] \\
     & \sum_i^N \vec{F}_i \cdot \delta \vec{r}_i \to \sum_j^n Q_j^{NC} \delta q_j - \underline{\delta \sum_i^N V_i} \\
     & \sum_j^n[Q_j^{NC} - \frac{\partial V}{\partial q_j}]\delta q_j
 \end{align}
-The underline section in 30 reduces to the total potential energy of the system $V$ in 31 and $Q_j = Q_j^{NC} - \frac{\partial V}{\partial q_j}$. Thus if the virtual generalized coordinated of the displacement $\delta q_j$ are arbitrary and independent then the following is satisfied when $\delta q_j = \emptyset$:
+The underline section in 30 reduces to the total potential energy of the system $V$ in 31 and $Q_j = Q_j^{NC} - \frac{\partial V}{\partial q_j}$. Thus if the virtual generalized coordinated of the displacement $\delta q_j$ are arbitrary and independent then the following is satisfied when $\delta q_j = \emptyset$ (note $\frac{\partial V}{\dot{q}_j} = 0$ in $L$):
 \begin{align}
     & \sum_j^n [(Q_j^{NC} - \frac{\partial V}{\partial q_j}) - \frac{d}{dt}\frac{\partial T}{\partial \dot{q}_j} - \frac{\partial T}{\partial q_j}] \delta q_j = 0
 \end{align}
@@ -168,32 +199,20 @@ The \textbf{System's Lagrangian} and set of $n$ system  of ODEs w.r.t. $\{q_j\}$
     & L = T - V \\
     & \frac{d}{dt}\frac{\partial L}{\partial \dot{q}_j} - \frac{\partial L}{\partial q_j} = Q_j^{NC} \quad j \in [1, ..., n]
 \end{align}
-Note $\frac{\partial V}{\dot{q}_j} = 0$ in $L$.
-
-\section{General Math}
-Cross (vector) product let $\vec{A}, \vec{B}, \vec{C} \in \mathbb{R}^3$:
-\begin{align}
-    & \vec{A} \times \vec{B} = \begin{vmatrix} \hat{i} & \hat{j} & \hat{k} \\ a_1 & a_2 & a_3 \\ b_1 & b_2 & b_3 \end{vmatrix} = \|\vec{A}\|\|\vec{B}\|\sin\theta \hat{n}
-\end{align}
-Dot product:
-\begin{align}
-    & \vec{A} \cdot \vec{B} = a_1b_1 + a_2 b_2 + a_3 b_3 = \|\vec{A}\|\|\vec{B}\|\cos\theta
-\end{align}
-Triple vector product:
-\begin{align}
-    & \vec{A} \times (\vec{B} \times \vec{C}) = (\vec{A} \cdot \vec{C}) \vec{B} - (\vec{A} \cdot \vec{B}) \vec{C} 
-\end{align}
-Integration by parts:
-\begin{align}
-    & \int u \, dv = uv - \int v \, du
-\end{align}
-Chain rule $h(t) = f(g(t))$:
-\begin{align}
-    & \dot{h}(t) = \frac{df}{dg}\frac{dg}{dt}
-\end{align}
-Product rule:
-\begin{align}
-    & \frac{d(uv)}{dt} = \frac{du}{dt}v + u\frac{dv}{dt}
-\end{align}
+\subsection{Find Equations of Motion}
+\begin{enumerate}
+    \item Draw FBD and define orthogonal frames of reference
+    
+    - Define datum(s) to help describe the potential differences ($V$)
+    
+    - Attach corotational frame to body(s) in motion ($T$)
+   
+    - Determine kinematics $\vec{r}_i$ and $\dot{\vec{r}}_i$ of the system and transform to common $\{\hat{i}, \hat{j}, \hat{k}\}$ (use transport theorem for $\vec{v}_i$)
+    \item Determine the generalized coordinates $\{q_j\}$ from above
+    \item Find $T$ (EQ 25) and $V$ (EQ 27/29)
+    \item Transform $\forall F_i^{NC} \to Q_j$ by attaching frame (moving or fixed) to force and compute $\vec{F}_i^{NC} \cdot \delta \vec{r}_i = Q_j^{NC} \delta q_j$
+    \item Formulate Lagrangian $L = T - V$
+    \item Solve EoM (EQ 36) piece by piece for each $q_j$ equaling $Q^{NC}$ and note partials (may not need chain rule)
+\end{enumerate}
 
 \end{document}
