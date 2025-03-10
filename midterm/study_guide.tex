@@ -43,7 +43,7 @@ $I_g$ is the inertial tensor w.r.t the center of gravity and $\dot{\vec{\omega}}
     \begin{align}
         & \vec{v}_F = \dot{\vec{r}}_B + \vec{\omega}_{B/F} \times \vec{r}_B
     \end{align}
-\subsection{Solve Rigid Body Dynamics via Newton's Method}
+\subsection{Solve Equations of Motion via Newton's Method}
 \begin{enumerate}
     \item Pick an origin for F then body frame(s) for the body(s)
     \item For each body of interest derive the kinematics: $\vec{r}_i$, $\dot{\vec{r}}_i$, $\ddot{\vec{r}}_i$, and angular momentum $\vec{H}_i$
@@ -112,8 +112,7 @@ Non-holonomic constraints cannot be expressed in this form. When holonomic const
 \end{equation}
 Velocities $\vec{v}_i$ of these $q_j$ are (where $\dot{q}_j$ are generalized velocities):
 \begin{align}
-    & \vec{v}_i = \frac{d\vec{r}_i}{dt} \to \sum_{j=1}^n\frac{\partial \vec{r}_i}{\partial q_j}\dot{q}_j + \frac{\partial \vec{r}_i}{dt} \quad i = 1,2,\ldots,n \\
-    & \frac{\partial \vec{v}_i}{\partial \dot{q}_j} = \frac{\partial \vec{r}_i}{\partial q_j} \quad i = 1,\ldots, N \text{ and } j = 1, \ldots, n
+    & \vec{v}_i = \frac{d\vec{r}_i}{dt} \to \sum_{j=1}^n\frac{\partial \vec{r}_i}{\partial q_j}\dot{q}_j + \frac{\partial \vec{r}_i}{dt} \quad i = 1,2,\ldots,n 
 \end{align}
 
 \section{Work}
@@ -180,7 +179,7 @@ Where $\Delta x = x - x_0$ is the stretch of the spring, $x_0$ is the unstretche
 \end{align}
 Where the constant is determined by choice of level.
 \section{Euler Lagrange Equations}
-Picking up from equation 20, \textbf{D'Alembert's Principle} virtual work due to inertial force can be writted in terms of $T$ (scalar):
+Picking up from equation 19, \textbf{D'Alembert's Principle} virtual work due to inertial force can be writted in terms of $T$ (scalar):
 \begin{align}
     & \sum_j^n [\frac{d(\partial T)}{dt(\partial \dot{q}_j)} - \frac{\partial T}{\partial q_j}] \delta q_j
 \end{align}
@@ -190,7 +189,7 @@ Then the virtual work due to external forces can be broken up into conservative 
     & \sum_i^N \vec{F}_i \cdot \delta \vec{r}_i \to \sum_j^n Q_j^{NC} \delta q_j - \underline{\delta \sum_i^N V_i} \\
     & \sum_j^n[Q_j^{NC} - \frac{\partial V}{\partial q_j}]\delta q_j
 \end{align}
-The underline section in 30 reduces to the total potential energy of the system $V$ in 31 and $Q_j = Q_j^{NC} - \frac{\partial V}{\partial q_j}$. Thus if the virtual generalized coordinated of the displacement $\delta q_j$ are arbitrary and independent then the following is satisfied when $\delta q_j = \emptyset$ (note $\frac{\partial V}{\dot{q}_j} = 0$ in $L$):
+The underline section in 29 reduces to the total potential energy of the system $V$ in 30 and $Q_j = Q_j^{NC} - \frac{\partial V}{\partial q_j}$. Thus if the virtual generalized coordinated of the displacement $\delta q_j$ are arbitrary and independent then the following is satisfied when $\delta q_j = \emptyset$ (note $\frac{\partial V}{\dot{q}_j} = 0$ in $L$):
 \begin{align}
     & \sum_j^n [(Q_j^{NC} - \frac{\partial V}{\partial q_j}) - \frac{d}{dt}\frac{\partial T}{\partial \dot{q}_j} - \frac{\partial T}{\partial q_j}] \delta q_j = 0
 \end{align}
@@ -199,7 +198,7 @@ The \textbf{System's Lagrangian} and set of $n$ system  of ODEs w.r.t. $\{q_j\}$
     & L = T - V \\
     & \frac{d}{dt}\frac{\partial L}{\partial \dot{q}_j} - \frac{\partial L}{\partial q_j} = Q_j^{NC} \quad j \in [1, ..., n]
 \end{align}
-\subsection{Find Equations of Motion}
+\subsection{Solve Equations of Motion Lagrangian}
 \begin{enumerate}
     \item Draw FBD and define orthogonal frames of reference
     
@@ -207,12 +206,12 @@ The \textbf{System's Lagrangian} and set of $n$ system  of ODEs w.r.t. $\{q_j\}$
     
     - Attach corotational frame to body(s) in motion ($T$)
    
-    - Determine kinematics $\vec{r}_i$ and $\dot{\vec{r}}_i$ of the system and transform to common $\{\hat{i}, \hat{j}, \hat{k}\}$ (use transport theorem for $\vec{v}_i$)
+    - Determine kinematics $\vec{r}_i$ and $\dot{\vec{r}}_i$ of the system and transform to common orthogonal basis $\{\hat{i}, \hat{j}, \hat{k}\}$ (transport theorem for $\vec{v}_i$)
     \item Determine the generalized coordinates $\{q_j\}$ from above
-    \item Find $T$ (EQ 25) and $V$ (EQ 27/29)
-    \item Transform $\forall F_i^{NC} \to Q_j$ by attaching frame (moving or fixed) to force and compute $\vec{F}_i^{NC} \cdot \delta \vec{r}_i = Q_j^{NC} \delta q_j$
-    \item Formulate Lagrangian $L = T - V$
-    \item Solve EoM (EQ 36) piece by piece for each $q_j$ equaling $Q^{NC}$ and note partials (may not need chain rule)
+    \item Find $T$ (EQ 24) and $V$ (EQ 26/28)
+    \item Transform $\forall F_i^{NC} \to Q_j$ by attaching frame (moving or fixed) to force and compute $\vec{F}_i^{NC} \cdot \delta \vec{r}_i = Q_j^{NC} \delta q_j, j \in [1, ..., n]$ 
+    \item Formulate the Lagrangian $L = T - V$
+    \item Solve EoM (EQ 35) $\frac{\partial L}{\partial \dot{q}_j}$, $\frac{\partial L}{q_j}$, $\frac{d}{dt}\frac{\partial L}{\partial \dot{q}_j}$, then $\forall q_j$ solve $Q^{NC}_j$ RHS
 \end{enumerate}
 
 \end{document}
